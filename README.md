@@ -71,6 +71,34 @@ file of the cloned project.<br>
 Finally, build and run the project.
 
 
+#### Open with Code::blocks
+
+[Code::Blocks][] is a well-known cross-platform C/C++ and Fortran IDE.
+It handle CMake projects by wrapping them into native Code::Blocks projects.
+
+*Install Code::Blocks*
+
+```sh
+sudo apt install codeblocks
+```
+
+*Prepare the Code::Blocks project:*
+
+```sh
+# Create a folder for the Code::Blocks project
+cd basic-c-sdl-project
+mkdir -p build/codeblocks
+cd build/codeblocks
+
+# Generate a Code::Blocks project
+cmake ../.. -G "CodeBlocks - Unix Makefiles"
+```
+
+*Open the project:*<br>
+Run Code::Blocks, and open the project in `basic-c-sdl-project/build/codeblocks`.<br>
+Finally, build and run the project.
+
+
 ## License
 
 This project is distributed under the terms of the MIT license
@@ -85,3 +113,4 @@ This project is distributed under the terms of the MIT license
 [SDL2_ttf]: https://www.libsdl.org/projects/SDL_ttf
 [SDL2_gfx]: http://www.ferzkopp.net/wordpress/2016/01/02/sdl_gfx-sdl2_gfx
 [Qt Creator]: https://doc.qt.io/qtcreator
+[Code::Blocks]: http://www.codeblocks.org
