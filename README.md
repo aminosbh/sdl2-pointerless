@@ -25,6 +25,28 @@ sudo apt install git-core build-essential pkg-config cmake cmake-data libsdl2-de
 sudo apt install libsdl2-image-dev libsdl2-ttf-dev libsdl2-gfx-dev
 ```
 
+## Build instructions
+
+```sh
+# Clone this repo
+git clone git@gitlab.com:aminosbh/basic-c-sdl-project.git
+cd basic-c-sdl-project
+
+# Create a build folder
+mkdir build
+cd build
+
+# Build
+cmake ..
+make
+
+# Run
+./basic-c-sdl-project
+```
+
+***Note:*** To use SDL2_image, SDL2_ttf or SDL2_gfx, you should uncomment
+some instructions in the CMakeLists.txt file and re-execute `cmake ..` and `make`
+
 ## License
 
 This project is distributed under the terms of the MIT license
