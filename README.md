@@ -29,7 +29,7 @@ sudo apt install libsdl2-image-dev libsdl2-ttf-dev libsdl2-gfx-dev
 
 ```sh
 # Clone this repo
-git clone git@gitlab.com:aminosbh/basic-c-sdl-project.git
+git clone https://gitlab.com/aminosbh/basic-c-sdl-project.git
 cd basic-c-sdl-project
 
 # Create a build folder
