@@ -130,6 +130,8 @@ Finally, build and run the project.
 
 ## License
 
+Author: Amine B. Hassouna [@aminosbh](https://gitlab.com/aminosbh)
+
 This project is distributed under the terms of the MIT license
 [&lt;LICENSE&gt;](LICENSE).
 

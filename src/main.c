@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Amine Ben Hassouna <amine.benhassouna@gmail.com>
+ * All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any
  * person obtaining a copy of this software and associated
