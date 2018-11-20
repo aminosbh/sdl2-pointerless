@@ -41,7 +41,7 @@
 #define SCREEN_WIDTH    800
 #define SCREEN_HEIGHT   600
 
-int main(int argc, char* args[])
+int main(int argc, char* argv[])
 {
     // Initialize SDL
     if(SDL_Init(SDL_INIT_VIDEO) < 0)
