@@ -1,5 +1,12 @@
 # CMake sdl project - IDE usage
 
+There is many IDEs that support CMake projects. It could be natively or via plugins.<br>
+This is a short tutorial on how we can use some IDEs to open a CMake project on linux:
+
+- [Qt Creator](#open-the-project-with-qt-creator)
+- [Code::Blocks](#open-the-project-with-codeblocks)
+- [Eclipse](#open-the-project-with-eclipse-cc)
+
 ## Open the project with Qt Creator
 
 [Qt Creator][] is a cross-platform C/C++ IDE, originally dedicated for the Qt framework.
