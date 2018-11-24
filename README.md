@@ -12,7 +12,7 @@ This project is a basic C [SDL][] project that uses [CMake][] as a build system.
 **On Debian/Ubuntu based distributions, use the following command:**
 
 ```sh
-sudo apt install git-core build-essential pkg-config cmake cmake-data libsdl2-dev
+sudo apt install git build-essential pkg-config cmake cmake-data libsdl2-dev
 ```
 
 **Optional packages:**
