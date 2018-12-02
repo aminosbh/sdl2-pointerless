@@ -130,10 +130,10 @@ int main(int argc, char* argv[])
             // Destroy renderer
             SDL_DestroyRenderer(renderer);
         }
-    }
 
-    // Destroy window
-    SDL_DestroyWindow(window);
+        // Destroy window
+        SDL_DestroyWindow(window);
+    }
 
     // Quit SDL
     SDL_Quit();
