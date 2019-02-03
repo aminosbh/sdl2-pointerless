@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018 Amine Ben Hassouna <amine.benhassouna@gmail.com>
+# Copyright (c) 2018, 2019 Amine Ben Hassouna <amine.benhassouna@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any
 # person obtaining a copy of this software and associated
@@ -32,33 +32,37 @@ project(basic-c-sdl-project)
 # Set the cmake minimum version to 3.5.1
 cmake_minimum_required(VERSION 3.5.1)
 
-# Add all headers files under the include directory
-include_directories(include)
+# Add SDL2 CMake modules
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/sdl2)
 
 # Add all c source files under the src directory
 file(GLOB SOURCES "src/*.c")
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-# Load CMake module : FindPkgConfig
-include(FindPkgConfig)
+# Add all headers files under the include directory
+target_include_directories(${PROJECT_NAME} PRIVATE include)
 
 # Add SDL2 library
-pkg_search_module(SDL2 REQUIRED sdl2)
-include_directories(${SDL2_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES})
+find_package(SDL2 REQUIRED)
+target_link_libraries(${PROJECT_NAME} SDL2::Main)
 
 # Add SDL2_image library
-#pkg_search_module(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
-#include_directories(${SDL2IMAGE_INCLUDE_DIRS})
-#target_link_libraries(${PROJECT_NAME} ${SDL2IMAGE_LIBRARIES})
+#find_package(SDL2_image REQUIRED)
+#target_link_libraries(${PROJECT_NAME} SDL2::Image)
 
 # Add SDL2_ttf library
-#pkg_search_module(SDL2TTF REQUIRED SDL2_ttf>=2.0.0)
-#include_directories(${SDL2TTF_INCLUDE_DIRS})
-#target_link_libraries(${PROJECT_NAME} ${SDL2TTF_LIBRARIES})
+#find_package(SDL2_ttf REQUIRED)
+#target_link_libraries(${PROJECT_NAME} SDL2::TTF)
+
+# Add SDL2_net library
+#find_package(SDL2_net REQUIRED)
+#target_link_libraries(${PROJECT_NAME} SDL2::Net)
+
+# Add SDL2_mixer library
+#find_package(SDL2_mixer REQUIRED)
+#target_link_libraries(${PROJECT_NAME} SDL2::Mixer)
 
 # Add SDL2_gfx library
-#pkg_search_module(SDL2GFX REQUIRED SDL2_gfx)
-#include_directories(${SDL2GFX_INCLUDE_DIRS})
-#target_link_libraries(${PROJECT_NAME} ${SDL2GFX_LIBRARIES})
+#find_package(SDL2_gfx REQUIRED)
+#target_link_libraries(${PROJECT_NAME} SDL2::GFX)
 
