@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Amine Ben Hassouna <amine.benhassouna@gmail.com>
+ * Copyright (c) 2018, 2019 Amine Ben Hassouna <amine.benhassouna@gmail.com>
  * All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any
@@ -43,6 +43,10 @@
 
 int main(int argc, char* argv[])
 {
+    // Unused argc, argv
+    (void) argc;
+    (void) argv;
+
     // Initialize SDL
     if(SDL_Init(SDL_INIT_VIDEO) < 0)
     {
