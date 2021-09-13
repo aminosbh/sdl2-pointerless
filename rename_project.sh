@@ -87,9 +87,9 @@ echo
 echo -e "\e[31mDo you confirm your modifications ? [y/N]\e[0m"
 read RENAME_PROJECT
 if [ -n "$RENAME_PROJECT" ] && [ "$(echo "$RENAME_PROJECT" | tr a-z A-Z)" = "Y" ]; then
-    sed -i "s/Basic C SDL2 project/${PROJECT_NAME}/g" README.md rename_project.sh
-    sed -i "s/basic-c-sdl-project/${PROJECT_EXECUTABLE_NAME}/g" README.md IDE_USAGE.md CMakeLists.txt rename_project.sh
-    sed -i "s;https://gitlab.com/aminosbh/basic-c-sdl-project.git;${PROJECT_GIT_REPO};g" README.md rename_project.sh
+    sed -i "s/SDL2 pointerless basic project/${PROJECT_NAME}/g" README.md rename_project.sh
+    sed -i "s/sdl2-pointerless/${PROJECT_EXECUTABLE_NAME}/g" README.md IDE_USAGE.md CMakeLists.txt rename_project.sh
+    sed -i "s;https://gitlab.com/aminosbh/sdl2-pointerless.git;${PROJECT_GIT_REPO};g" README.md rename_project.sh
     echo -e "\e[32mThe project was successfully renamed\e[0m"
 else
     echo -e "\e[33mOperation aborted\e[0m"

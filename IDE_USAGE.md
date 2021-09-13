@@ -44,7 +44,7 @@ sudo apt install codeblocks
 
 ```sh
 # Create a folder for the Code::Blocks project
-cd basic-c-sdl-project
+cd sdl2-pointerless
 mkdir -p build/codeblocks
 cd build/codeblocks
 
@@ -53,7 +53,7 @@ cmake ../.. -G "CodeBlocks - Unix Makefiles"
 ```
 
 *Open the project:*<br>
-Run Code::Blocks, and open the project in `basic-c-sdl-project/build/codeblocks`.<br>
+Run Code::Blocks, and open the project in `sdl2-pointerless/build/codeblocks`.<br>
 Finally, build and run the project.
 
 
@@ -72,15 +72,15 @@ Offline package: https://www.eclipse.org/downloads/packages
 
 ```sh
 # Create a folder for the Eclipse project outside this project
-cd basic-c-sdl-project
-mkdir ../eclipse-basic-c-sdl-project
-cd ../eclipse-basic-c-sdl-project
+cd sdl2-pointerless
+mkdir ../eclipse-sdl2-pointerless
+cd ../eclipse-sdl2-pointerless
 
 # Generate an Eclipse project
-cmake ../basic-c-sdl-project -G "Eclipse CDT4 - Unix Makefiles"
+cmake ../sdl2-pointerless -G "Eclipse CDT4 - Unix Makefiles"
 ```
 *Open the project:*<br>
-Run Eclipse, and open the project in `eclipse-basic-c-sdl-project`.<br>
+Run Eclipse, and open the project in `eclipse-sdl2-pointerless`.<br>
 Create a new run configuration: Go to `Run` &gt; `Run configurations` &gt;
 `C\C++ Application` and specify the C/C++ Application using `Search Project...`<br>
 Finally, build and run the project.
