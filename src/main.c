@@ -4,12 +4,12 @@
 #define SCREEN_HEIGHT       (600)
 
 // Max grid dimension
-#define GRID_MAX_X_CELLS    (10)
-#define GRID_MAX_Y_CELLS    (10)
+#define GRID_MAX_X_CELLS    (32)
+#define GRID_MAX_Y_CELLS    (16)
 
 #define GRID_DEFAULT_MARGIN         (20)
 #define GRID_DEFAULT_COLOR          COLOR_WHITE
-#define GRID_DEFAULT_BORDER_SIZE    (2)
+#define GRID_DEFAULT_BORDER_SIZE    (1)
 #define GRID_DEFAULT_BORDER_COLOR   COLOR_GRAY
 
 #define USE_AZERTY_KEYBOARD         0
@@ -1723,19 +1723,119 @@ bool start(SDL_Renderer* renderer, int width, int height)
 
 void draw(int x_cells, int y_cells)
 {
-    delay(500);
+    int cursor_x = 1;
+    int cursor_y = 5;
 
-    set_cell_color(2, 1, COLOR_RED);
+    int operand1 = -1;
+    int operand2 = -1;
+    SDL_Keycode oper = -1;
+    bool computed = false;
 
-    delay(500);
+    draw_text("Calculator", 2, 1, 2, COLOR_ORANGE);
 
-    set_cell_color(2, 3, COLOR_BLUE);
+    while (true)
+    {
+        int key = get_key();
 
-    delay(500);
+        if (key == SDLK_ESCAPE)
+        {
+            exit();
+        }
+        else if(is_key_digit(key)
+                && (operand1 == -1
+                    || (oper != -1 && operand2 == -1) ) )
+        {
+            if (operand1 == -1)
+            {
+                // Clean grid
+                set_grid_color(COLOR_WHITE);
 
-    set_cell_color(2, 5, COLOR_GREEN);
+                operand1 = key_to_int(key);
+            }
+            else
+            {
+                operand2 = key_to_int(key);
+            }
 
-    delay(500);
+            draw_key(key, cursor_x, cursor_y, COLOR_GREEN);
+            cursor_x += 5;
+        }
+        else if ((is_key_arithmetic_op(key))
+                 && operand1 != -1
+                 && oper == -1
+                 && operand2 == -1)
+        {
+            oper = key;
+            draw_key(key, cursor_x, cursor_y, COLOR_GRAY);
+            cursor_x += 5;
+        }
+        else if(key == SDLK_RETURN
+                && operand1 != -1
+                && operand2 != -1
+                && oper != -1
+                && computed == false)
+        {
+            computed = true;
 
-    set_cell_color(2, 7, COLOR_YELLOW);
+            cursor_x++;
+            draw_char('=', cursor_x, cursor_y, COLOR_GRAY);
+            cursor_x += 5;
+
+            int result = 0;
+
+            if (oper == SDLK_PLUS)
+            {
+                result = operand1 + operand2;
+            }
+            else if (oper == SDLK_MINUS)
+            {
+                result = operand1 - operand2;
+            }
+            else if (oper == SDLK_DIVIDE)
+            {
+                result = operand1 / operand2;
+            }
+            else if (oper == SDLK_MULTIPLY)
+            {
+                result = operand1 * operand2;
+            }
+            else if (oper == SDLK_PERCENT)
+            {
+                result = operand1 % operand2;
+            }
+
+            int units = result % 10;
+            int tens = result / 10;
+
+            if (result >= 0)
+            {
+                if (tens > 0)
+                {
+                    draw_char(digit_to_char(tens), cursor_x, cursor_y, COLOR_RED);
+                    cursor_x += 5;
+                }
+
+                draw_char(digit_to_char(units), cursor_x, cursor_y, COLOR_RED);
+            }
+            else
+            {
+                draw_char('-', cursor_x, cursor_y, COLOR_RED);
+                cursor_x += 5;
+
+                draw_char(digit_to_char(units), cursor_x, cursor_y, COLOR_RED);
+            }
+        }
+        else if(key == SDLK_BACKSPACE)
+        {
+            cursor_x = 1;
+            operand1 = -1;
+            operand2 = -1;
+            oper = -1;
+            computed = false;
+
+            set_grid_color(COLOR_WHITE);
+        }
+
+        delay(10);
+    }
 }
