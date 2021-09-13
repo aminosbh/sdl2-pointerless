@@ -4,12 +4,12 @@
 #define SCREEN_HEIGHT       (600)
 
 // Max grid dimension
-#define GRID_MAX_X_CELLS    (10)
-#define GRID_MAX_Y_CELLS    (10)
+#define GRID_MAX_X_CELLS    (66)
+#define GRID_MAX_Y_CELLS    (57)
 
-#define GRID_DEFAULT_MARGIN         (20)
+#define GRID_DEFAULT_MARGIN         (5)
 #define GRID_DEFAULT_COLOR          COLOR_WHITE
-#define GRID_DEFAULT_BORDER_SIZE    (2)
+#define GRID_DEFAULT_BORDER_SIZE    (0)
 #define GRID_DEFAULT_BORDER_COLOR   COLOR_GRAY
 
 #define USE_AZERTY_KEYBOARD         0
@@ -1723,19 +1723,137 @@ bool start(SDL_Renderer* renderer, int width, int height)
 
 void draw(int x_cells, int y_cells)
 {
-    delay(500);
+    int margin_x = 1;
+    int margin_y = 1;
 
-    set_cell_color(2, 1, COLOR_RED);
+    int cursor_x = margin_x;
+    int cursor_y = margin_y;
 
-    delay(500);
+    int char_spacing = 1;
+    int line_spacing = 1;
 
-    set_cell_color(2, 3, COLOR_BLUE);
+    bool cursor_shown = false;
+    int cursor_timer = 0;
 
-    delay(500);
+    SDL_Color text_color = COLOR_BLUE;
 
-    set_cell_color(2, 5, COLOR_GREEN);
+    while (true)
+    {
+        delay(10);
 
-    delay(500);
+        SDL_Keycode key = get_key();
 
-    set_cell_color(2, 7, COLOR_YELLOW);
+        if (key != SDLK_UNKNOWN && cursor_shown)
+        {
+            draw_char(' ', cursor_x, cursor_y, text_color);
+        }
+
+        if (key == SDLK_ESCAPE)
+        {
+            exit();
+        }
+        else if(is_key_ascii(key))
+        {
+            char c = key_to_char(key);
+
+            if (cursor_x == margin_x && cursor_y > margin_y && c == ' ')
+                continue;
+
+            if (cursor_y > y_cells - 6 - line_spacing)
+                continue;
+
+            draw_char(c, cursor_x, cursor_y, text_color);
+
+            if (cursor_x > x_cells - 4 - char_spacing - margin_x)
+            {
+                // Word wrap
+                cursor_x = margin_x;
+                cursor_y += 6 + line_spacing;
+            }
+            else
+            {
+                cursor_x += 4 + char_spacing;
+            }
+        }
+        else if (key == SDLK_RETURN)
+        {
+            if (cursor_y <= y_cells - 6)
+            {
+                cursor_x = margin_x;
+                cursor_y += 6 + line_spacing;
+            }
+        }
+        else if (key == SDLK_BACKSPACE)
+        {
+            if (cursor_x == margin_x)
+            {
+                if (cursor_y > margin_y)
+                {
+                    cursor_y -= 6 + line_spacing;
+                    cursor_x = ( ( (x_cells - margin_x + line_spacing) / (4 + line_spacing) ) - margin_x )
+                               * (4 + line_spacing)
+                               + margin_x;
+
+                    draw_char(' ', cursor_x, cursor_y, text_color);
+                }
+            }
+            else
+            {
+                cursor_x -= 4 + char_spacing;
+                if (cursor_x < margin_x)
+                {
+                    cursor_x = margin_x;
+                }
+
+                draw_char(' ', cursor_x, cursor_y, text_color);
+            }
+        }
+        else if (key == SDLK_UP)
+        {
+            if (cursor_y > margin_y)
+            {
+                cursor_y -= 6 + line_spacing;
+            }
+        }
+        else if (key == SDLK_DOWN)
+        {
+            if (cursor_y < y_cells - 6 - line_spacing)
+            {
+                cursor_y += 6 + line_spacing;
+            }
+        }
+        else if (key == SDLK_LEFT)
+        {
+            if (cursor_x > margin_x)
+            {
+                cursor_x -= 4 + char_spacing;
+            }
+        }
+        else if (key == SDLK_RIGHT)
+        {
+            if (cursor_x < x_cells - 4 - char_spacing)
+            {
+                cursor_x += 4 + char_spacing;
+            }
+        }
+
+        cursor_timer += 10;
+        if (cursor_timer > 300)
+        {
+            cursor_timer = 0;
+            cursor_shown = !cursor_shown;
+
+            if (cursor_y <= y_cells - 6 - line_spacing + 1)
+            {
+                if (cursor_shown)
+                {
+                    draw_char('_', cursor_x, cursor_y, text_color);
+                }
+                else
+                {
+                    draw_char(' ', cursor_x, cursor_y, text_color);
+                }
+            }
+        }
+    }
 }
