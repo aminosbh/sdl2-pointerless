@@ -1723,19 +1723,56 @@ bool start(SDL_Renderer* renderer, int width, int height)
 
 void draw(int x_cells, int y_cells)
 {
-    delay(500);
+    delay(1000);
 
-    set_cell_color(2, 1, COLOR_RED);
+    // Simple animation
 
-    delay(500);
+    for(int i = 0; i < y_cells; i++)
+    {
+        set_cell_color(1, i, COLOR_RED);
+        delay(100);
+    }
 
-    set_cell_color(2, 3, COLOR_BLUE);
+    for(int i = 0; i < y_cells; i++)
+    {
+        set_cell_color(3, i, COLOR_YELLOW);
+        delay(100);
+    }
 
-    delay(500);
+    // Interactive animation
 
-    set_cell_color(2, 5, COLOR_GREEN);
+    int timer = 0;
+    char c = 'A';
 
-    delay(500);
+    while(true)
+    {
+        int key = get_key();
 
-    set_cell_color(2, 7, COLOR_YELLOW);
+        if(key == SDLK_RETURN)
+        {
+            set_background_color(COLOR_GREEN);
+        }
+        else if (key == SDLK_BACKSPACE)
+        {
+            set_background_color(COLOR_BLUE);
+        }
+        else if(key == SDLK_ESCAPE)
+        {
+            exit();
+        }
+
+        if (timer % 1000 == 0) // Every second
+        {
+            draw_char(c, 5, 2, COLOR_ORANGE);
+
+            c++;
+            if (c > 'Z')
+            {
+                c = 'A';
+            }
+        }
+
+        timer += 10;
+        delay(10);
+    }
 }
