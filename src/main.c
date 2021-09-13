@@ -4,12 +4,12 @@
 #define SCREEN_HEIGHT       (600)
 
 // Max grid dimension
-#define GRID_MAX_X_CELLS    (10)
-#define GRID_MAX_Y_CELLS    (10)
+#define GRID_MAX_X_CELLS    (66)
+#define GRID_MAX_Y_CELLS    (57)
 
-#define GRID_DEFAULT_MARGIN         (20)
+#define GRID_DEFAULT_MARGIN         (5)
 #define GRID_DEFAULT_COLOR          COLOR_WHITE
-#define GRID_DEFAULT_BORDER_SIZE    (2)
+#define GRID_DEFAULT_BORDER_SIZE    (0)
 #define GRID_DEFAULT_BORDER_COLOR   COLOR_GRAY
 
 #define USE_AZERTY_KEYBOARD         0
@@ -1723,19 +1723,13 @@ bool start(SDL_Renderer* renderer, int width, int height)
 
 void draw(int x_cells, int y_cells)
 {
-    delay(500);
-
-    set_cell_color(2, 1, COLOR_RED);
-
-    delay(500);
-
-    set_cell_color(2, 3, COLOR_BLUE);
-
-    delay(500);
-
-    set_cell_color(2, 5, COLOR_GREEN);
-
-    delay(500);
-
-    set_cell_color(2, 7, COLOR_YELLOW);
+    draw_text(
+        "abcdefghijklmnopqrstuvwxyz"
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        "0123456789"
+        " !\"#$%&'()*+,-./"
+        ":;<=>?@"
+        "[\\]^_`"
+        "{|}~\b"
+        , 1, 1, 1, COLOR_BLUE);
 }
