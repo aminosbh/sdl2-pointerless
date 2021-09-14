@@ -149,6 +149,19 @@ See the branch [example/text-editor](https://github.com/aminosbh/sdl2-pointerles
 ![Text editor](/images/text-editor.png)
 
 
+**Implement a simple painting app:**
+
+See the branch [example/paint](https://github.com/aminosbh/sdl2-pointerless/blob/example/paint/src/main.c#L1725).
+
+![Text editor](/images/paint.png)
+
+**Implement mouse hover:**
+
+See the branch [example/mouse-hover](https://github.com/aminosbh/sdl2-pointerless/blob/example/mouse-hover/src/main.c#L1725).
+
+![Text editor](/images/mouse-hover.png)
+
+
 ## Build on linux
 
 ### Dependencies
