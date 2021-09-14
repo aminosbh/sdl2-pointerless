@@ -104,7 +104,7 @@ void draw(int x_cells, int y_cells)
 
 **Implement a simple/interactive animation:**
 
-See the branch [example/animation](https://github.com/aminosbh/sdl2-pointerless/blob/example/animation/src/main.c).
+See the branch [example/animation](https://github.com/aminosbh/sdl2-pointerless/blob/example/animation/src/main.c#L1565).
 
 ![Animation](/images/animation.png)
 
@@ -121,21 +121,21 @@ void draw(int x_cells, int y_cells)
 ![Hello World](/images/hello-world.png)
 
 
-See the branch [example/display-text](https://github.com/aminosbh/sdl2-pointerless/blob/example/display-text/src/main.c).
+See the branch [example/display-text](https://github.com/aminosbh/sdl2-pointerless/blob/example/display-text/src/main.c#L1565).
 
 ![Display text](/images/display-text.png)
 
 
 **Implement a calculator:**
 
-See the branch [example/calculator](https://github.com/aminosbh/sdl2-pointerless/blob/example/calculator/src/main.c).
+See the branch [example/calculator](https://github.com/aminosbh/sdl2-pointerless/blob/example/calculator/src/main.c#L1565).
 
 ![Calculator](/images/calculator.png)
 
 
 **Implement a simple text editor:**
 
-See the branch [example/text-editor](https://github.com/aminosbh/sdl2-pointerless/blob/example/text-editor/src/main.c).
+See the branch [example/text-editor](https://github.com/aminosbh/sdl2-pointerless/blob/example/text-editor/src/main.c#L1565).
 
 ![Text editor](/images/text-editor.png)
 
