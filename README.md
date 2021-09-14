@@ -13,7 +13,7 @@ Just copy all the content of `src/main.c` and put it in place of any code in
 your default `main.c` or `main.cpp`.  
 Try to execute the code as it is to check that it is running successfully.  
 
-You can now start editing the `draw` function (at line 1565).  
+You can now start editing the `draw` function (at line #1725).  
 The micro-library offers some basic functions to start coding the UI:  
 
 ```
@@ -104,7 +104,7 @@ void draw(int x_cells, int y_cells)
 
 **Implement a simple/interactive animation:**
 
-See the branch [example/animation](https://github.com/aminosbh/sdl2-pointerless/blob/example/animation/src/main.c#L1565).
+See the branch [example/animation](https://github.com/aminosbh/sdl2-pointerless/blob/example/animation/src/main.c#L1725).
 
 ![Animation](/images/animation.png)
 
@@ -121,21 +121,21 @@ void draw(int x_cells, int y_cells)
 ![Hello World](/images/hello-world.png)
 
 
-See the branch [example/display-text](https://github.com/aminosbh/sdl2-pointerless/blob/example/display-text/src/main.c#L1565).
+See the branch [example/display-text](https://github.com/aminosbh/sdl2-pointerless/blob/example/display-text/src/main.c#L1725).
 
 ![Display text](/images/display-text.png)
 
 
 **Implement a calculator:**
 
-See the branch [example/calculator](https://github.com/aminosbh/sdl2-pointerless/blob/example/calculator/src/main.c#L1565).
+See the branch [example/calculator](https://github.com/aminosbh/sdl2-pointerless/blob/example/calculator/src/main.c#L1725).
 
 ![Calculator](/images/calculator.png)
 
 
 **Implement a simple text editor:**
 
-See the branch [example/text-editor](https://github.com/aminosbh/sdl2-pointerless/blob/example/text-editor/src/main.c#L1565).
+See the branch [example/text-editor](https://github.com/aminosbh/sdl2-pointerless/blob/example/text-editor/src/main.c#L1725).
 
 ![Text editor](/images/text-editor.png)
 

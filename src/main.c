@@ -18,7 +18,7 @@
 // IMPORTANT NOTE:
 //
 //      To start coding, go down in this file to the 'FREE CODING' section.
-//      All your code should be written inside the 'draw' function (line 1565).
+//      All your code should be written inside the 'draw' function (line 1725).
 //      There is also a 'DOCUMENTATION' section just above the 'FREE CODING' section.
 //
 //      Read the README.md file for more details.
@@ -117,6 +117,7 @@
 #define _COLOR(RED, GREEN, BLUE)    { RED, GREEN, BLUE, 0xFF }
 #define COLOR(RED, GREEN, BLUE)     ((SDL_Color) { RED, GREEN, BLUE, 0xFF })
 
+const SDL_Color NO_COLOR            = {0, 0, 0, 0};
 const SDL_Color COLOR_BLACK         = _COLOR(0, 0, 0);
 const SDL_Color COLOR_WHITE         = _COLOR(0xFF, 0xFF, 0xFF);
 const SDL_Color COLOR_GRAY          = _COLOR(0x64, 0x64, 0x64);
@@ -468,22 +469,38 @@ void center_grid(Grid* grid, int screen_width, int screen_height)
 
 void set_cell_color(Grid* grid, int x, int y, SDL_Color color)
 {
-    grid->cells[x][y].rect_color = color;
+    if (x >= 0 && x <= grid->x_cells && y >= 0 && y <= grid->y_cells)
+    {
+        grid->cells[x][y].rect_color = color;
+    }
 }
 
 SDL_Color get_cell_color(Grid* grid, int x, int y)
 {
-    return grid->cells[x][y].rect_color;
+    if (x >= 0 && x <= grid->x_cells && y >= 0 && y <= grid->y_cells)
+    {
+        return grid->cells[x][y].rect_color;
+    }
+
+    return NO_COLOR;
 }
 
 void set_cell_border_color(Grid* grid, int x, int y, SDL_Color color)
 {
-    grid->cells[x][y].border_color = color;
+    if (x >= 0 && x <= grid->x_cells && y >= 0 && y <= grid->y_cells)
+    {
+        grid->cells[x][y].border_color = color;
+    }
 }
 
 SDL_Color get_cell_border_color(Grid* grid, int x, int y)
 {
-    return grid->cells[x][y].border_color;
+    if (x >= 0 && x <= grid->x_cells && y >= 0 && y <= grid->y_cells)
+    {
+        return grid->cells[x][y].border_color;
+    }
+
+    return NO_COLOR;
 }
 
 void set_grid_color(Grid* grid, SDL_Color color)
@@ -1192,6 +1209,118 @@ void draw_key(Grid* grid, SDL_Keycode key, int at_x, int at_y, SDL_Color color)
     draw_char(grid, c, at_x, at_y, color);
 }
 
+SDL_Keycode get_key(SDL_Event* event)
+{
+    if (event->type == SDL_KEYDOWN)
+    {
+        return event->key.keysym.sym;
+    }
+
+    return SDLK_UNKNOWN;
+}
+
+bool _is_mouse_over_grid(Grid* grid, int x, int y)
+{
+    return x >= grid->rect.x && x <= grid->rect.x + grid->rect.w
+           && y >= grid->rect.y && y <= grid->rect.y + grid->rect.h;
+}
+
+bool is_mouse_over_grid(Grid* grid)
+{
+    int x, y;
+    SDL_GetMouseState(&x, &y);
+
+    return _is_mouse_over_grid(grid, x, y);
+}
+
+bool is_mouse_clicked(Grid* grid, SDL_Event* event)
+{
+    if (event->type == SDL_MOUSEBUTTONDOWN)
+    {
+        int x = event->button.x;
+        int y = event->button.y;
+
+        return _is_mouse_over_grid(grid, x, y);
+    }
+
+    return false;
+}
+
+bool is_mouse_moved(Grid* grid, SDL_Event* event)
+{
+    if (event->type == SDL_MOUSEMOTION)
+    {
+        int x = event->motion.x;
+        int y = event->motion.y;
+
+        return _is_mouse_over_grid(grid, x, y);
+    }
+
+    return false;
+}
+
+int get_mouse_pos_x(Grid* grid, SDL_Event* event)
+{
+    if (is_mouse_clicked(grid, event))
+    {
+        int x = event->button.x;
+        return (x - grid->rect.x) / (grid->rect.w / grid->x_cells);
+    }
+    else if(is_mouse_moved(grid, event))
+    {
+        int x = event->motion.x;
+        return (x - grid->rect.x) / (grid->rect.w / grid->x_cells);
+    }
+    else
+    {
+        int x, y;
+        SDL_GetMouseState(&x, &y);
+
+        if(_is_mouse_over_grid(grid, x, y))
+        {
+            return (x - grid->rect.x) / (grid->rect.w / grid->x_cells);
+        }
+    }
+
+    return -1;
+}
+
+int get_mouse_pos_y(Grid* grid, SDL_Event* event)
+{
+    if (is_mouse_clicked(grid, event))
+    {
+        int y = event->button.y;
+        return (y - grid->rect.y) / (grid->rect.h / grid->y_cells);
+    }
+    else if(is_mouse_moved(grid, event))
+    {
+        int y = event->motion.y;
+        return (y - grid->rect.y) / (grid->rect.h / grid->y_cells);
+    }
+    else
+    {
+        int x, y;
+        SDL_GetMouseState(&x, &y);
+
+        if(_is_mouse_over_grid(grid, x, y))
+        {
+            return (y - grid->rect.y) / (grid->rect.h / grid->y_cells);
+        }
+    }
+
+    return -1;
+}
+
+Uint8 get_mouse_button(Grid* grid, SDL_Event* event)
+{
+    if (is_mouse_clicked(grid, event))
+    {
+        return event->button.button;
+    }
+
+    return 0;
+}
+
 bool start(SDL_Renderer* renderer, int width, int height);
 
 int main(int argc, char* argv[])
@@ -1259,9 +1388,9 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-void delay(SDL_Renderer* renderer, Uint32 ms, SDL_Keycode* key)
+void delay(SDL_Renderer* renderer, Uint32 ms, SDL_Event* event)
 {
-    *key = SDLK_UNKNOWN;
+    event->type = 0;
 
     for (Uint32 i = 0; i < ms / 10; i++)
     {
@@ -1276,7 +1405,16 @@ void delay(SDL_Renderer* renderer, Uint32 ms, SDL_Keycode* key)
             }
             else if(e.type == SDL_KEYDOWN)
             {
-                *key = normalize_key(e.key.keysym.sym);
+                *event = e;
+                event->key.keysym.sym = normalize_key(event->key.keysym.sym);
+            }
+            else if(e.type == SDL_MOUSEBUTTONDOWN)
+            {
+                *event = e;
+            }
+            else if(e.type == SDL_MOUSEMOTION)
+            {
+                *event = e;
             }
         }
 
@@ -1288,7 +1426,7 @@ void delay(SDL_Renderer* renderer, Uint32 ms, SDL_Keycode* key)
     }
 }
 
-bool render_and_delay(SDL_Renderer* renderer, Grid* grid, SDL_Color background_color, Uint32 ms, SDL_Keycode* key)
+bool render_and_delay(SDL_Renderer* renderer, Grid* grid, SDL_Color background_color, Uint32 ms, SDL_Event* event)
 {
     // Set white background
     set_background_color(renderer, background_color);
@@ -1297,73 +1435,75 @@ bool render_and_delay(SDL_Renderer* renderer, Grid* grid, SDL_Color background_c
     render_grid(grid, renderer);
 
     // Wait
-    delay(renderer, ms, key);
+    delay(renderer, ms, event);
 
     return true;
 }
 
-void draw(SDL_Renderer* renderer, Grid* grid, SDL_Color* background_color, SDL_Keycode* key, int x_cells, int y_cells);
+// Global variables
+SDL_Renderer* g_renderer = NULL;
+Grid g_grid = {0};
+SDL_Color g_background_color = COLOR_WHITE;
+SDL_Event g_event = {0};
+
+void draw(int x_cells, int y_cells);
 
 bool start(SDL_Renderer* renderer, int width, int height)
 {
-    // Init grid
-    Grid grid = {0};
+    // Init global renderer
+    g_renderer = renderer;
 
     // Set number of cells
-    grid.x_cells = GRID_MAX_X_CELLS;
-    grid.y_cells = GRID_MAX_Y_CELLS;
+    g_grid.x_cells = GRID_MAX_X_CELLS;
+    g_grid.y_cells = GRID_MAX_Y_CELLS;
 
     // Set grid dimensions
     int margin = GRID_DEFAULT_MARGIN;
-    int cell_size = min(
-                        (width - margin * 2) / grid.x_cells,
-                        (height - margin * 2) / grid.y_cells);
-    grid.rect.w = cell_size * grid.x_cells;
-    grid.rect.h = cell_size * grid.y_cells;
+    int cell_size = min( (width - margin * 2) / g_grid.x_cells,
+                         (height - margin * 2) / g_grid.y_cells );
+    g_grid.rect.w = cell_size * g_grid.x_cells;
+    g_grid.rect.h = cell_size * g_grid.y_cells;
 
     // Set grid backgroud
-    grid.background_color = GRID_DEFAULT_COLOR;
+    g_grid.background_color = GRID_DEFAULT_COLOR;
 
     // Set grid border thickness and color
-    grid.border = GRID_DEFAULT_BORDER_SIZE;
-    grid.border_color = GRID_DEFAULT_BORDER_COLOR;
+    g_grid.border = GRID_DEFAULT_BORDER_SIZE;
+    g_grid.border_color = GRID_DEFAULT_BORDER_COLOR;
 
     // Set cells border thickness and color
-    grid.cells_border = grid.border;
-    grid.cells_border_color = grid.border_color;
+    g_grid.cells_border = g_grid.border;
+    g_grid.cells_border_color = g_grid.border_color;
 
     // Ajust size and center
-    ajust_grid_size(&grid);
-    center_grid(&grid, width, height);
+    ajust_grid_size(&g_grid);
+    center_grid(&g_grid, width, height);
 
-    if(!init_grid(&grid))
+    if(!init_grid(&g_grid))
     {
         fprintf(stderr, "Grid fail to initialize !\n");
         return false;
     }
 
-    SDL_Color background_color = COLOR_WHITE;
-    SDL_Keycode key = SDLK_UNKNOWN;
-
     // Set white background
-    set_background_color(renderer, background_color);
-    grid.background_color = background_color;
+    set_background_color(renderer, g_background_color);
+    g_grid.background_color = g_background_color;
 
     // Render grid
-    render_grid(&grid, renderer);
+    render_grid(&g_grid, renderer);
 
     // Update screen
     SDL_RenderPresent(renderer);
 
     // Draw shapes
-    draw(renderer, &grid, &background_color, &key, grid.x_cells, grid.y_cells);
+    draw(g_grid.x_cells, g_grid.y_cells);
 
     // Set white background
-    set_background_color(renderer, background_color);
-    grid.background_color = background_color;
+    set_background_color(renderer, g_background_color);
+    g_grid.background_color = g_background_color;
 
     // Render grid
-    render_grid(&grid, renderer);
+    render_grid(&g_grid, renderer);
 
     // Update screen
     SDL_RenderPresent(renderer);
@@ -1398,27 +1538,29 @@ bool start(SDL_Renderer* renderer, int width, int height)
     return true;
 }
 
-#define set_background_color(color)             (*p_background_color = color)
-#define get_background_color()                  (*p_background_color)
-#define set_cell_color(x, y, color)             set_cell_color(p_grid, x, y, color)
-#define get_cell_color(x, y)                    get_cell_color(p_grid, x, y)
-#define set_cell_border_color(x, y, color)      set_cell_border_color(p_grid, x, y, color)
-#define get_cell_border_color(x, y)             get_cell_border_color(p_grid, x, y)
-#define set_grid_color(color)                   set_grid_color(p_grid, color)
-#define get_grid_color()                        get_grid_color(p_grid)
-#define set_grid_border_color(color)            set_grid_border_color(p_grid, color)
-#define get_grid_border_color()                 get_grid_border_color(p_grid)
-#define delay(ms)                               render_and_delay(p_renderer, p_grid, *p_background_color, ms, p_key)
-#define get_key()                               (*p_key)
-#define exit()                                  exit(0)
-#define draw_key(key, at_x, at_y, color)        draw_key(p_grid, key, at_x, at_y, color)
-#define draw_char(c, at_x, at_y, color)         draw_char(p_grid, c, at_x, at_y, color)
-#define draw_text(text, at_x, at_y, space, color) \
-    draw_text(p_grid, text, at_x, at_y, space, color)
-
-#define draw(_x_cells , _y_cells) \
-    draw(SDL_Renderer* p_renderer, Grid* p_grid, SDL_Color* p_background_color, \
-        SDL_Keycode* p_key, _x_cells, _y_cells)
+#define set_background_color(color)                 (g_background_color = color)
+#define get_background_color()                      (g_background_color)
+#define set_cell_color(x, y, color)                 set_cell_color(&g_grid, x, y, color)
+#define get_cell_color(x, y)                        get_cell_color(&g_grid, x, y)
+#define set_cell_border_color(x, y, color)          set_cell_border_color(&g_grid, x, y, color)
+#define get_cell_border_color(x, y)                 get_cell_border_color(&g_grid, x, y)
+#define set_grid_color(color)                       set_grid_color(&g_grid, color)
+#define get_grid_color()                            get_grid_color(&g_grid)
+#define set_grid_border_color(color)                set_grid_border_color(&g_grid, color)
+#define get_grid_border_color()                     get_grid_border_color(&g_grid)
+#define delay(ms)                                   render_and_delay(g_renderer, &g_grid, g_background_color, ms, &g_event)
+#define get_key()                                   get_key(&g_event)
+#define is_mouse_over_grid()                        is_mouse_over_grid(&g_grid)
+#define is_mouse_clicked()                          is_mouse_clicked(&g_grid, &g_event)
+#define is_mouse_moved()                            is_mouse_moved(&g_grid, &g_event)
+#define get_mouse_pos_x()                           get_mouse_pos_x(&g_grid, &g_event)
+#define get_mouse_pos_y()                           get_mouse_pos_y(&g_grid, &g_event)
+#define get_mouse_button()                          get_mouse_button(&g_grid, &g_event)
+#define exit()                                      exit(0)
+#define draw_key(key, at_x, at_y, color)            draw_key(&g_grid, key, at_x, at_y, color)
+#define draw_char(c, at_x, at_y, color)             draw_char(&g_grid, c, at_x, at_y, color)
+#define draw_text(text, at_x, at_y, space, color)   draw_text(&g_grid, text, at_x, at_y, space, color)
+#define printf(...)                                 (fprintf (stdout, __VA_ARGS__), fflush(stdout))
 
 //***************************************************************************************
 // DOCUMENTATION
@@ -1463,6 +1605,24 @@ bool start(SDL_Renderer* renderer, int width, int height)
 //
 //      get_key()
 //          Get the pressed key
+//
+//      is_mouse_over_grid()
+//          Check if the mouse is over the grid.
+//
+//      is_mouse_clicked()
+//          Check if the mouse was clicked (over the grid).
+//
+//      is_mouse_moved()
+//          Check if the mouse was moved (over the grid).
+//
+//      get_mouse_pos_x()
+//          Get the x coordinate of mouse.
+//
+//      get_mouse_pos_y()
+//          Get the y coordinate of mouse.
+//
+//      get_mouse_button()
+//          Get the clicked mouse button (SDL_BUTTON_LEFT, SDL_BUTTON_MIDDLE, SDL_BUTTON_RIGHT).
 //
 //      draw_key(key, at_x, at_y, color)
 //          Write a key at position (at_x, at_y) with a specific color
