@@ -3,7 +3,16 @@
 This is a **one-file** C [SDL2][SDL] project. It is meant for beginners to let
 them create SDL-based projects **without** any *pointer* specific knowledge.
 It offers a micro-library that help create any grid-based user interface.  
-The only dependency of this project is the SDL2 library.
+The only dependency of this project is the SDL2 library.  
+
+For those who can deal with pointers and multi-file project with CMake, it is
+recommended to use the [Basic C SDL2 game](https://github.com/aminosbh/basic-c-sdl-game)
+as a base for any grid-based project/game and the
+[Flying plane SDL2 animation](https://github.com/aminosbh/flying-plane-sdl-animation)
+for more sophisticated projects/games.  
+
+A list of examples, projects and tutorials could be found at
+[SDL/SDL2 samples and projects](https://github.com/aminosbh/sdl2-samples-and-projects)
 
 ## Getting started
 
