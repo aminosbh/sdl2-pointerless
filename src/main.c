@@ -1723,19 +1723,33 @@ bool start(SDL_Renderer* renderer, int width, int height)
 
 void draw(int x_cells, int y_cells)
 {
-    delay(500);
+    int prev_pos_x = -1;
+    int prev_pos_y = -1;
 
-    set_cell_color(2, 1, COLOR_RED);
+    while(true)
+    {
+        if (!is_mouse_clicked())
+        {
+            int x = get_mouse_pos_x();
+            int y = get_mouse_pos_y();
 
-    delay(500);
+            if (x != prev_pos_x || y != prev_pos_y)
+            {
+                if (prev_pos_x != -1 && prev_pos_y != -1)
+                {
+                    set_cell_color(prev_pos_x, prev_pos_y, COLOR_WHITE);
+                }
 
-    set_cell_color(2, 3, COLOR_BLUE);
+                if (x != -1 && y != -1)
+                {
+                    set_cell_color(x, y, COLOR_PINK);
+                }
 
-    delay(500);
+                prev_pos_x = x;
+                prev_pos_y = y;
+            }
+        }
 
-    set_cell_color(2, 5, COLOR_GREEN);
-
-    delay(500);
-
-    set_cell_color(2, 7, COLOR_YELLOW);
+        delay(10);
+    }
 }
