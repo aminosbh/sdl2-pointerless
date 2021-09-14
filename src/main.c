@@ -1723,19 +1723,39 @@ bool start(SDL_Renderer* renderer, int width, int height)
 
 void draw(int x_cells, int y_cells)
 {
-    delay(500);
+    while(true)
+    {
+        SDL_Keycode key = get_key();
 
-    set_cell_color(2, 1, COLOR_RED);
+        if(key == SDLK_RETURN)
+        {
+            set_background_color(COLOR_GREEN);
+        }
+        if(key == SDLK_SPACE)
+        {
+            set_background_color(COLOR_WHITE);
+        }
+        else if(key == SDLK_BACKSPACE)
+        {
+            set_grid_color(COLOR_WHITE);
+        }
 
-    delay(500);
+        if (is_mouse_clicked())
+        {
+            int x = get_mouse_pos_x();
+            int y = get_mouse_pos_y();
+            int button = get_mouse_button();
 
-    set_cell_color(2, 3, COLOR_BLUE);
+            if (button == SDL_BUTTON_LEFT)
+            {
+                set_cell_color(x, y, COLOR_RED);
+            }
+            else if (button == SDL_BUTTON_RIGHT)
+            {
+                set_cell_color(x, y, COLOR_WHITE);
+            }
+        }
 
-    delay(500);
-
-    set_cell_color(2, 5, COLOR_GREEN);
-
-    delay(500);
-
-    set_cell_color(2, 7, COLOR_YELLOW);
+        delay(10);
+    }
 }
