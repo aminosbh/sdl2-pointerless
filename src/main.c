@@ -1392,10 +1392,15 @@ void delay(SDL_Renderer* renderer, Uint32 ms, SDL_Event* event)
 {
     event->type = 0;
 
-    for (Uint32 i = 0; i < ms / 10; i++)
+    Uint32 start = SDL_GetTicks();
+    int step = ms >= 10 ? 10 : 1;
+    while (SDL_GetTicks() - start < ms)
     {
+        // Update screen
+        SDL_RenderPresent(renderer);
+
         SDL_Event e;
-        while(SDL_PollEvent(&e))
+        while(SDL_WaitEventTimeout(&e, step))
         {
             // User requests quit
             if(e.type == SDL_QUIT)
@@ -1417,12 +1422,6 @@ void delay(SDL_Renderer* renderer, Uint32 ms, SDL_Event* event)
                 *event = e;
             }
         }
-
-        // Update screen
-        SDL_RenderPresent(renderer);
-
-        // Wait 1ms
-        SDL_Delay(10);
     }
 }
 
