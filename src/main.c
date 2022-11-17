@@ -469,7 +469,7 @@ void center_grid(Grid* grid, int screen_width, int screen_height)
 
 void set_cell_color(Grid* grid, int x, int y, SDL_Color color)
 {
-    if (x >= 0 && x <= grid->x_cells && y >= 0 && y <= grid->y_cells)
+    if (x >= 0 && x < grid->x_cells && y >= 0 && y < grid->y_cells)
     {
         grid->cells[x][y].rect_color = color;
     }
@@ -477,7 +477,7 @@ void set_cell_color(Grid* grid, int x, int y, SDL_Color color)
 
 SDL_Color get_cell_color(Grid* grid, int x, int y)
 {
-    if (x >= 0 && x <= grid->x_cells && y >= 0 && y <= grid->y_cells)
+    if (x >= 0 && x < grid->x_cells && y >= 0 && y < grid->y_cells)
     {
         return grid->cells[x][y].rect_color;
     }
@@ -487,7 +487,7 @@ SDL_Color get_cell_color(Grid* grid, int x, int y)
 
 void set_cell_border_color(Grid* grid, int x, int y, SDL_Color color)
 {
-    if (x >= 0 && x <= grid->x_cells && y >= 0 && y <= grid->y_cells)
+    if (x >= 0 && x < grid->x_cells && y >= 0 && y < grid->y_cells)
     {
         grid->cells[x][y].border_color = color;
     }
@@ -495,7 +495,7 @@ void set_cell_border_color(Grid* grid, int x, int y, SDL_Color color)
 
 SDL_Color get_cell_border_color(Grid* grid, int x, int y)
 {
-    if (x >= 0 && x <= grid->x_cells && y >= 0 && y <= grid->y_cells)
+    if (x >= 0 && x < grid->x_cells && y >= 0 && y < grid->y_cells)
     {
         return grid->cells[x][y].border_color;
     }
